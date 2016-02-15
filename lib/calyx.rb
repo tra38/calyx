@@ -13,16 +13,16 @@ module Calyx
         @rules[name.to_sym] = construct_rule(productions)
       end
 
-      def []=(symbol, production)
-        @rules[symbol] = production
-      end
-
-      def [](symbol)
+      def expand(symbol)
         @rules[symbol]
       end
 
       def combine(rules)
         @rules.merge!(rules.to_h)
+      end
+
+      def evaluate
+        @rules[:start].evaluate
       end
 
       def to_h
@@ -76,13 +76,13 @@ module Calyx
 
     module Production
       class NonTerminal
-        def initialize(expansion, registry)
-          @expansion = expansion.to_sym
+        def initialize(symbol, registry)
+          @symbol = symbol.to_sym
           @registry = registry
         end
 
         def evaluate
-          @registry[@expansion].evaluate
+          @registry.expand(@symbol).evaluate
         end
       end
 
@@ -216,7 +216,7 @@ module Calyx
     end
 
     def generate
-      @registry[:start].evaluate
+      @registry.evaluate
     end
   end
 end
