@@ -108,6 +108,24 @@ module HelloWorld
 end
 ```
 
+##Storing Values (Memoization)
+
+If you wish to have a rule return the same values every time, you may use the `memo` constructor.
+
+```ruby
+class Sentiment < Calyx::Grammar
+  start '{greeting} World'
+  memo :greeting, "Hello", "Goodbye"
+end
+
+greeting = Sentinment.new
+
+greeting.generate
+# > "Hello world."
+gretting.generate
+#> "Hello world."
+```
+
 ### Random Sampling
 
 By default, the outcomes of generated rules are selected with Ruby’s built-in random number generator (as seen in methods like `Kernel.rand` and `Array.sample`). If you want to supply a weighted probability list, you can pass in arrays to the rule constructor, with the first argument being the template text string and the second argument being a float representing the probability between `0` and `1` of this choice being selected.
