@@ -54,13 +54,6 @@ module Calyx
         registry.rule(name, memoized_value)
       end
 
-#first, grab productions
-#then sample from productions
-#forward it over to rule.
-#If you're going to need to sample anyway...
-#why not let the computer do it for you? Let the computer
-#handle 'messy' code. It doesn't judge.
-
       def rule(name, *productions, &production)
         registry.rule(name, *productions)
       end
