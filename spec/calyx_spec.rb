@@ -100,4 +100,17 @@ describe Calyx do
 
     expect(Hue.generate).to eq('rgb(255,0,0)')
   end
+
+  specify 'can handle memoization' do
+    class Pet < Calyx::Grammar
+      start '{pet}'
+      memo :pet, 'cat','dog','fish'
+    end
+    grammar = Pet.new
+    5.times do
+      first_generation = grammar.generate
+      second_generation = grammar.generate
+      expect(first_generation).to eq(second_generation)
+    end
+  end
 end
