@@ -148,5 +148,4 @@ describe Calyx do
     expect(grammar.generate(cyberdyne_context_hash)).to eq("You should buy shares in Cyberdyne.")
     expect(grammar.generate(bridgestone_context_hash)).to eq("You should buy shares in Bridgestone.")
   end
-  
 end

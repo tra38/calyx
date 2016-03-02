@@ -61,11 +61,6 @@ module Calyx
         registry.start(*productions)
       end
 
-      def memo(name, *productions, &production)
-        memoized_value = productions.sample
-        registry.rule(name, memoized_value)
-      end
-
       def rule(name, *productions, &production)
         registry.rule(name, *productions)
       end
