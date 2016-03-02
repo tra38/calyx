@@ -1,6 +1,8 @@
 module Calyx
   class Grammar
     class Registry
+      attr_reader :rules
+
       def initialize
         @rules = {}
       end
@@ -17,16 +19,24 @@ module Calyx
         @rules[symbol]
       end
 
-      def combine(rules)
-        @rules.merge!(rules.to_h)
+      def combine(registry)
+        @rules = rules.merge(registry.rules)
       end
 
-      def evaluate
+      def evaluate(context={})
+        context.each do |key, value|
+          if @rules.key?(key.to_sym)
+            raise "Rule already declared in grammar: #{key}"
+          end
+
+          @rules[key.to_sym] = if value.is_a?(Array)
+            Production::Choices.parse(value, self)
+          else
+            Production::Concat.parse(value.to_s, self)
+          end
+        end
+
         @rules[:start].evaluate
-      end
-
-      def to_h
-        @rules
       end
 
       private
@@ -58,8 +68,8 @@ module Calyx
         registry.rule(name, *productions)
       end
 
-      def inherit_registry(rules)
-        registry.combine(rules) unless rules.nil?
+      def inherit_registry(child_registry)
+        registry.combine(child_registry) unless child_registry.nil?
       end
 
       def inherited(subclass)
@@ -204,12 +214,12 @@ module Calyx
         @registry = Registry.new
         @registry.instance_eval(&block)
       else
-        @registry = self.class.registry
+        @registry = self.class.registry.clone
       end
     end
 
-    def generate
-      @registry.evaluate
+    def generate(context={})
+      @registry.evaluate(context)
     end
   end
 end

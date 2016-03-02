@@ -90,7 +90,7 @@ class HelloWorld < Calyx::Grammar
 end
 ```
 
-Nesting and hierarchy can be manipulated to balance consistency with variation. The exact same word atoms can be combined in different ways to produce strikingly different resulting texts.
+Nesting and hierarchy can be manipulated to balance consistency with novelty. The exact same word atoms can be combined in a variety of ways to produce strikingly different resulting texts.
 
 ```ruby
 module HelloWorld
@@ -132,7 +132,18 @@ gretting.generate
 
 ### Random Sampling
 
-By default, the outcomes of generated rules are selected with Ruby’s built-in random number generator (as seen in methods like `Kernel.rand` and `Array.sample`). If you want to supply a weighted probability list, you can pass in arrays to the rule constructor, with the first argument being the template text string and the second argument being a float representing the probability between `0` and `1` of this choice being selected.
+By default, the outcomes of generated rules are selected with Ruby’s built-in pseudorandom number generator (as seen in methods like `Kernel.rand` and `Array.sample`). To seed the random number generator, pass in a seed value (an integer) as the first argument to the constructor:
+
+```ruby
+MyGrammar.new(12345)
+Calyx::Grammar.new(12345, &rules)
+```
+
+When a seed value isn’t supplied, `Time.new.to_i` is used as the default seed, which makes each run of the generator relatively unique.
+
+### Weighted Selection
+
+If you want to supply a weighted probability list, you can pass in arrays to the rule constructor, with the first argument being the template text string and the second argument being a float representing the probability between `0` and `1` of this choice being selected.
 
 For example, you can model the triangular distribution produced by rolling 2d6:
 
@@ -226,6 +237,25 @@ end
 # => "A pear."
 ```
 
+### Dynamically Constructing Rules
+
+Template expansions can be dynamically constructed at runtime by passing a context map of rules to the `#generate` method:
+
+```ruby
+class AppGreeting < Calyx::Grammar
+  start 'Hi {username}!', 'Welcome back {username}...', 'Hola {username}'
+end
+
+context = {
+  username: UserModel.username
+}
+
+greeting = AppGreeting.new
+greeting.generate(context)
+```
+
+__Note: This feature is still experimental, and the API may morph and change a bit as we try to figure out the best patterns for merging and combining grammars.__
+
 ## Roadmap
 
 Rough plan for stabilising the API and features for a `1.0` release.
@@ -233,7 +263,7 @@ Rough plan for stabilising the API and features for a `1.0` release.
 | Version | Features planned |
 |---------|------------------|
 | `0.6`   | ~~block constructor~~ |
-| `0.7`   | support for template context map passed to generate |
+| `0.7`   | ~~support for template context map passed to generate~~ |
 | `0.8`   | return grammar tree from evaluate/generate, with to_s being separate |
 | `0.9`   | support mixin/composition of rule sets rather than inheritance |
 | `0.10`  | support YAML format (and JSON?) |
