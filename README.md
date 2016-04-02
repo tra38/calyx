@@ -1,6 +1,8 @@
-# Calyx
+# Tra38-Calyx Is Deprecated
 
-Calyx provides a simple API for generating text with declarative recursive grammars.
+tra38-calyx was a fork of the [Calyx](https://github.com/maetl/calyx) Ruby Gem, created in January 2016 to help people handle data-driven narratives (robojournalism). However, recent changes in the main Calyx gem has rendered tra38-calyx unnecessary. I have decided to focus my efforts on improving the Calyx gem for the time being (though some of the ideas in this gem may be later reused in other projects). I strongly recommend using the main Calyx ruby gem.
+
+Still, if you want to use this forked gem, then go right ahead. Below is the documentation. Enjoy!
 
 ## Install
 
@@ -277,7 +279,7 @@ See the `LICENSE` file [included with the project distribution](https://github.c
 ## History
 In November 2015, Mark Rickerby created Calyx and used that gem to create [choose-your-own adventure gamebooks](https://github.com/dariusk/NaNoGenMo-2015/issues/189). He later on wrote a [blog post](http://maetl.net/notes/storyboard/gamebook-of-dungeon-tropes) explaining his thought process.
 
-In January 2016, Tariq Ali forked Calyx and started adding in new features to turn Calyx into a useful tool for generating data-driven narratives (robojournalism).
+In January 2016, Tariq Ali forked Calyx and started adding in new features to turn Calyx into a useful tool for generating data-driven narratives (robojournalism). This fork has now been deprecated after the main Calyx branch has been updated.
 
 ##Contributions
 We welcome contributions! Here is a step-by-step guide.
